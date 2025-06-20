@@ -1,30 +1,31 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace Database\Seeders;
 
-return new class extends Migration
+use App\Models\Note;
+use App\Models\User;
+use Illuminate\Database\Seeder;
+
+class NotesTableSeeder extends Seeder
 {
     /**
-     * Run the migrations.
+     * Run the database seeds.
      */
-    public function up(): void
+    public function run(): void
     {
-        Schema::create('notes', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->longText('text');
-            $table->timestamps();
-        });
-    }
+        // Get the first user (or create one if needed)
+        $user = User::first() ?? User::factory()->create();
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('notes');
+        Note::create([
+            'title' => 'Welcome Note',
+            'text' => 'This is a note linked to a user.',
+            'user_id' => $user->id,
+        ]);
+
+        Note::create([
+            'title' => 'Another Note',
+            'text' => 'All notes should be linked to a user now.',
+            'user_id' => $user->id,
+        ]);
     }
-};
- 
+}
