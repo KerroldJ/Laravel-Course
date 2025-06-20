@@ -11,13 +11,11 @@
     <body>
         <nav class="bg-gray-100 px-8 py-4 text-gray-700 flex items-center justify-center justify-between"> 
         <span class="font-bold text-2xl"> Laravel-Essential-Training </span>
-        <span> Hello, User</span>
+        <span> Hello, {{ $name }} </span>
         </nav>
-
+        
         <section class="p-12 mx-auto max-w-6xl text-gray-800">
-            <h1 class="text-4xl font-bold mb-6">Welcome to Laravel Essential Training</h1>
-            <p class="mb-4">This is a simple Laravel application to demonstrate essential features and functionalities.</p>
-            <p class="mb-4">Feel free to explore the code and learn more about
+            {{ $content }}
         </section>
     </body>
 </html>
