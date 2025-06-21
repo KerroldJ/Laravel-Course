@@ -12,16 +12,12 @@ class NoteController extends Controller
 {
     public function index()
     {
-        // Logic to display the list of notes
-        $user_id = Auth::id();
-        $note = Note::where('user_id', $user_id)->latest('updated_at')->paginate(5);
-        
+        $note = Note::whereBelongsTo(Auth::user())->latest('updated_at')->paginate(5);
         return view('notes.index')->with('notes', $note);
     }
    
     public function create()
     {
-        // Logic to show the form for creating a new note
         $user_id = Auth::id();
         $notebooks = Notebook::where('user_id', $user_id)->get();
         return view('notes.create')->with('notebooks', $notebooks);
@@ -29,37 +25,42 @@ class NoteController extends Controller
     
     public function store(Request $request)
     {
-        // Logic to store a new note
         $request->validate([
             'title' => 'required|max:255',
             'text' => 'required',
         ]);
 
-        $note = new Note([
+        $note = Auth::user()->notes()->create([
             'title' => $request->get('title'),
             'text' => $request->get('text'),
             'notebook_id' => $request->get('notebook_id'),
-            'user_id' => Auth::id(),
-            'uuid' => Str::uuid()
+            'uuid' => Str::uuid(),
         ]);
-        $note->save();
+
         return redirect()->route('note.index')->with('success', 'Note created successfully.');
     }
 
 
     public function show(Note $note)
     {
+
+        if ($note->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         if (!Auth::check()) {
             abort(403, 'Unauthorized action.');
         }
-
+        
         return view('notes.show', ['note' => $note]);
     }
     
+
     public function edit(Note $note)
     {
-        // Logic to show the form for editing a specific note
-
+        if ($note->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
         $user_id = Auth::id();
         $notebooks = Notebook::where('user_id', $user_id)->get();
 

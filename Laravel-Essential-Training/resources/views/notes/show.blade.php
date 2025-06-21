@@ -10,6 +10,10 @@
 
             <x-alert-success>{{ session('success') }}</x-alert-success>
             
+           <span class=" px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded-md text-gray-800 dark:text-gray-200 rounded text-sm font-semibold">
+            {{ $note->notebook->name }}
+           </span>
+           
             <div class=" flex gap-6 text-white">
                 <p class="opacity-70"> <strong> Created: </strong> {{ $note->created_at->diffForHumans() }} </p>
                 <p class="opacity-70"><strong> Last Changed: </strong> {{ $note->updated_at->diffForHumans() }}</p>
