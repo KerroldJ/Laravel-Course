@@ -24,6 +24,20 @@
                 @error('text')
                     <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                 @enderror
+                
+
+                <select name="notebook_id" id="notebook_id" class="mt-4 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                    <option value="">Select Notebook</option>
+                    @foreach ($notebooks as $book)
+                        <option value="{{ $book->id }}"
+                            @if ($book->id == old('notebook_id', $note->notebook_id))
+                                selected    
+                            @endif
+                            >
+                            {{ $book->name }}
+                        </option>
+                    @endforeach
+                </select>
 
                 <x-primary-button class="mt-6">Update Note</x-primary-button>
             </form>

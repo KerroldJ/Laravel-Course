@@ -25,6 +25,7 @@ class NotebookController extends Controller
     
     public function store(Request $request)
     {
+        
         // Logic to store a new notebook
         $request->validate([
             'name' => 'required|max:255',
