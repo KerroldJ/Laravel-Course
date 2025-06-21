@@ -81,12 +81,16 @@ class NoteController extends Controller
             'text' => $request->text,
         ]);
 
-        return redirect()->route('note.index')->with('success', 'Note updated successfully.');
+        return redirect()->route('note.show', $note)->with('success', 'Note updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(Note $note)
     {
-        // Logic to delete a specific note
+       if (!Auth::check()) {
+            abort(403, 'Unauthorized action.');
+       }
        
+        $note->delete();
+        return redirect()->route('note.index')->with('success', 'Note deleted successfully.');
     }
 }
