@@ -12,7 +12,7 @@ class NoteController extends Controller
     {
         // Logic to display the list of notes
         $user_id = Auth::id();
-        $notes = Note::where('user_id', $user_id)->latest('updated_at')->get();
+        $notes = Note::where('user_id', $user_id)->latest('updated_at')->paginate(5);
         
         return view('notes.index')->with('notes', $notes);
     }
@@ -20,13 +20,27 @@ class NoteController extends Controller
     public function create()
     {
         // Logic to show the form for creating a new note
+        return view('notes.create');
     }
     
     public function store(Request $request)
     {
         // Logic to store a new note
+        $request->validate([
+            'title' => 'required|max:255',
+            'text' => 'required',
+        ]);
 
+        $note = new Note([
+            'title' => $request->get('title'),
+            'text' => $request->get('text'),
+            'user_id' => Auth::id(),
+        ]);
+        $note->save();
+        return redirect()->route('note.index')->with('success', 'Note created successfully.');
     }
+
+
     public function show($id)
     {
         // Logic to display a specific note
