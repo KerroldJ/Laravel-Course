@@ -13,9 +13,9 @@ class NoteController extends Controller
     {
         // Logic to display the list of notes
         $user_id = Auth::id();
-        $notes = Note::where('user_id', $user_id)->latest('updated_at')->paginate(5);
+        $note = Note::where('user_id', $user_id)->latest('updated_at')->paginate(5);
         
-        return view('notes.index')->with('notes', $notes);
+        return view('notes.index')->with('notes', $note);
     }
    
     public function create()
@@ -49,19 +49,39 @@ class NoteController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        return view('notes.show')->with('note', $note);
+        return view('notes.show', ['note' => $note]);
     }
     
-    public function edit($id)
+    public function edit(Note $note)
     {
         // Logic to show the form for editing a specific note
+
+        if (!Auth::check()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+         return view('notes.edit', ['note' => $note]);
        
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Note $note)
     {
-        // Logic to update a specific note
-        
+
+        if (!Auth::check()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+         $request->validate([
+            'title' => 'required|max:255',
+            'text' => 'required',
+        ]);
+
+        $note -> update([
+            'title' => $request->title,
+            'text' => $request->text,
+        ]);
+
+        return redirect()->route('note.index')->with('success', 'Note updated successfully.');
     }
 
     public function destroy($id)

@@ -7,9 +7,12 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class=" flex gap-6">
+            <div class=" flex gap-6 text-white">
                 <p class="opacity-70"> <strong> Created: </strong> {{ $note->created_at->diffForHumans() }} </p>
                 <p class="opacity-70"><strong> Last Changed: </strong> {{ $note->updated_at->diffForHumans() }}</p>
+
+                <x-link-button href="{{ route('note.edit', $note) }}" class="ml-auto" >Edit Note</x-link-button>
+                
             </div>
             <div class="bg-white p-6 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="text-gray-900 dark:text-gray-100">                    
