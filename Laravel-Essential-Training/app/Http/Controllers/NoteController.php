@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Note;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class NoteController extends Controller
 {
@@ -35,16 +36,20 @@ class NoteController extends Controller
             'title' => $request->get('title'),
             'text' => $request->get('text'),
             'user_id' => Auth::id(),
+            'uuid' => Str::uuid()
         ]);
         $note->save();
         return redirect()->route('note.index')->with('success', 'Note created successfully.');
     }
 
 
-    public function show($id)
+    public function show(Note $note)
     {
-        // Logic to display a specific note
-       
+        if (!Auth::check()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('notes.show')->with('note', $note);
     }
     
     public function edit($id)

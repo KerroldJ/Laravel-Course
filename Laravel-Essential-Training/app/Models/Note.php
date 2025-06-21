@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Note extends Model
 {
     use HasFactory;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['title', 'text', 'user_id'];
+    
+    protected $guarded = [];
+
+     public function getRouteKeyName()
+     {
+         return 'uuid';
+     }
+
 }

@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
+     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('notebooks', function (Blueprint $table) {
+        Schema::create('note', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
             $table->foreignIdFor(User::class);
